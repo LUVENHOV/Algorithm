@@ -1,15 +1,17 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
 
-	static int T, N, M, K;
-	static int[][] map;
+	static int N, M, K, count;
+	static int[][] board;
 	static boolean[][] visited;
-	static int[] rr = { 0, 0, 1, -1 };
+	static int[] rr = { 0, 0, -1, 1 };
 	static int[] rc = { 1, -1, 0, 0 };
-	static int count;
 
 	static class Node {
 		int r, c;
@@ -21,57 +23,66 @@ public class Main {
 
 	}
 
-	static void BFS() {
-		Queue<Node> queue = new LinkedList<>();
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < M; j++) {
-				if (map[i][j] == 1 && visited[i][j] == false) {
-					visited[i][j] = true;
-					queue.add(new Node(i, j));
+	static void bfs(int r, int c) {
+		Queue<Node> que = new LinkedList<>();
+		que.add(new Node(r, c));
 
-					while (!queue.isEmpty()) {
-						Node now = queue.poll();
-						for (int k = 0; k < 4; k++) {
-							int nr = now.r + rr[k];
-							int nc = now.c + rc[k];
+		while (!que.isEmpty()) {
+			Node now = que.poll();
 
-							if (nr >= 0 && nc >= 0 && nr < N && nc < M && map[nr][nc] == 1
-									&& visited[nr][nc] == false) {
-								visited[nr][nc] = true;
-								queue.add(new Node(nr, nc));
-							}
+			for (int i = 0; i < 4; i++) {
+				int nr = now.r + rr[i];
+				int nc = now.c + rc[i];
+				// 맵 범위 설정
+				if (nr < 0 || nc < 0 || nr >= N || nc >= M)
+					continue;
+				// 조건 설정
+				if (visited[nr][nc] || board[nr][nc] == 0)
+					continue;
+				visited[nr][nc] = true;
+				que.add(new Node(nr, nc));
 
-						}
-					}
-					count++;
-				}
 			}
 		}
+		count++;
 
 	}
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+	public static void main(String[] args) throws NumberFormatException, IOException {
 
-		T = sc.nextInt();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		int T = Integer.parseInt(br.readLine());
 
 		for (int tc = 1; tc <= T; tc++) {
-			N = sc.nextInt();
-			M = sc.nextInt();
-			K = sc.nextInt();
-			count = 0;
-			map = new int[N][M];
+
+			StringTokenizer st = new StringTokenizer(br.readLine());
+
+			N = Integer.parseInt(st.nextToken());
+			M = Integer.parseInt(st.nextToken());
+			K = Integer.parseInt(st.nextToken());
+			board = new int[N][M];
 			visited = new boolean[N][M];
 
 			for (int i = 0; i < K; i++) {
-				int a = sc.nextInt();
-				int b = sc.nextInt();
-				map[a][b] = 1;
+				st = new StringTokenizer(br.readLine());
+				int a = Integer.parseInt(st.nextToken());
+				int b = Integer.parseInt(st.nextToken());
+				board[a][b] = 1;
 			}
 
-			BFS();
-			System.out.println(count);
-		}
+			count = 0;
 
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < M; j++) {
+					if (board[i][j] == 1 && !visited[i][j]) {
+						visited[i][j] = true;
+						bfs(i, j);
+					}
+				}
+			}
+			System.out.println(count);
+		} // tc
 	}
+
 }
