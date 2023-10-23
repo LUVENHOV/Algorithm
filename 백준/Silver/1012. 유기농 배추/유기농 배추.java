@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -23,29 +21,22 @@ public class Main {
 
 	}
 
-	static void bfs(int r, int c) {
-		Queue<Node> que = new LinkedList<>();
-		que.add(new Node(r, c));
-
-		while (!que.isEmpty()) {
-			Node now = que.poll();
-
-			for (int i = 0; i < 4; i++) {
-				int nr = now.r + rr[i];
-				int nc = now.c + rc[i];
-				// 맵 범위 설정
-				if (nr < 0 || nc < 0 || nr >= N || nc >= M)
-					continue;
-				// 조건 설정
-				if (visited[nr][nc] || board[nr][nc] == 0)
-					continue;
-				visited[nr][nc] = true;
-				que.add(new Node(nr, nc));
-
-			}
+	static void dfs(int r, int c) {
+		//dfs 들어왔으면 방문처리
+		visited[r][c] = true;
+		
+		for (int i = 0; i < 4; i++) {
+			//사방탐색
+			int nr = r + rr[i];
+			int nc = c + rc[i];
+			// 맵 범위 설정
+			if (nr < 0 || nc < 0 || nr >= N || nc >= M)
+				continue;
+			// 조건 설정
+			if (visited[nr][nc] || board[nr][nc] == 0)
+				continue;
+			dfs(nr, nc);
 		}
-		count++;
-
 	}
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
@@ -76,8 +67,9 @@ public class Main {
 			for (int i = 0; i < N; i++) {
 				for (int j = 0; j < M; j++) {
 					if (board[i][j] == 1 && !visited[i][j]) {
-						visited[i][j] = true;
-						bfs(i, j);
+						dfs(i, j);
+						// 한 좌표에 대한 dfs가 끝났으면 그게 한 덩어리니까 그 때 카운트!!
+						count++;
 					}
 				}
 			}
