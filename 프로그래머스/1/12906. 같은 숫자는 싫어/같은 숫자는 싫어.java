@@ -1,21 +1,21 @@
 import java.util.*;
 
 public class Solution {
-    public int[] solution(int []arr) {
-        ArrayList<Integer> list = new ArrayList<>();
-        int cur = -1;
-        for(int i = 0; i < arr.length; i++){
-            if (arr[i] != cur){
-                list.add(arr[i]);
-                cur = arr[i];
+    public int[] solution(int []arr) {        
+        Stack<Integer> stack = new Stack<>();
+
+        for (int n : arr) {
+            if (stack.isEmpty() || stack.peek() != n) {
+                stack.add(n);
             }
         }
-        
-        int[] answer = new int[list.size()];
-        for(int i = 0; i< list.size(); i++){
-            answer[i] = list.get(i);
+
+        int[] answer = new int[stack.size()];
+        int index = 0;
+        for (int n : stack) {
+            answer[index++] = n;
         }
-        
+
         return answer;
     }
 }
