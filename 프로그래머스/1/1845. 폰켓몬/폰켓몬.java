@@ -4,16 +4,16 @@ public class Solution {
   public int solution(int[] nums) {
     int max = nums.length / 2;
 
-    HashSet<Integer> numsSet = new HashSet<>();
+    HashSet<Integer> set = new HashSet<>();
 
     for (int num : nums) {
-      numsSet.add(num);
+      set.add(num);
     }
 
-    if (numsSet.size() > max) {
+    if (set.size() > max) {
       return max;
     } else {
-      return numsSet.size();
+      return set.size();
     }
   }
 }
