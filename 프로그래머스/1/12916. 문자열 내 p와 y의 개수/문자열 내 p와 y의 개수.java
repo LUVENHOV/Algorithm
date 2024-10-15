@@ -2,17 +2,18 @@ class Solution {
     boolean solution(String s) {
         boolean answer = true;
         
-        s = s.toLowerCase();
+        s = s.toUpperCase();
         
-        int p = 0;
-        int y = 0;
+        int cntP = 0;
+        int cntY = 0;
         
-        for(int i = 0; i < s.length(); i++){
-            if (s.charAt(i) == 'p') p++;
-            else if (s.charAt(i) == 'y') y++;
+        for(int i =0; i < s.length(); i++){
+            if(s.charAt(i) == 'P') cntP ++;
+            else if(s.charAt(i) == 'Y') cntY ++;
         }
         
-        if(p != y) answer = false;
+        if (cntP != cntY) answer = false;
+
 
         return answer;
     }
