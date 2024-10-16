@@ -28,8 +28,8 @@ private static int[] ry = {0, 0, 1, -1};
                 int nx = now.x + rx[i];
                 int ny = now.y + ry[i];
 
-                if (nx >= 0 && nx < maps[0].length && ny >= 0 && ny < maps.length && maps[ny][nx] != 0 && dist[ny][nx] <= 0){
-                    dist[ny][nx] = dist[now.y][now.x] + 1;
+                if (nx >= 0 && nx < maps[0].length && ny >= 0 && ny < maps.length && maps[nx][ny] != 0 && dist[nx][ny] <= 0){
+                    dist[nx][ny] = dist[now.x][now.y] + 1;
                     que.add(new Pair(nx, ny));
                 }
             }
