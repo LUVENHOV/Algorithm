@@ -1,40 +1,46 @@
-import java.util.ArrayDeque;
+import java.util.*;
 
 class Solution {
-
-private static int[] rx = {1, -1, 0, 0};
-private static int[] ry = {0, 0, 1, -1};
-
-    private static class Pair {
-        int x, y;
-
-        public Pair(int x, int y) {
-            this.x = x;
-            this.y = y;
+    
+    public class Node {
+        int r,c;
+        
+        public Node(int r,int c){
+            this.r = r;
+            this.c = c;
         }
     }
-
+    
+    static int[] rr = {-1,1,0,0};
+    static int[] rc = {0,0,-1,1};
+    
     public int solution(int[][] maps) {
-        int[][] dist = new int[maps.length][maps[0].length];
-        ArrayDeque<Pair> que = new ArrayDeque<>();
-        que.add(new Pair(0, 0));
-        dist[0][0] = 1;
-        dist[maps.length - 1][maps[0].length - 1] = -1;
-
-        while (!que.isEmpty()) {
-            Pair now = que.poll();
-
-            for (int i = 0; i < 4; i++) {
-                int nx = now.x + rx[i];
-                int ny = now.y + ry[i];
-
-                if (nx >= 0 && nx < maps[0].length && ny >= 0 && ny < maps.length && maps[nx][ny] != 0 && dist[nx][ny] <= 0){
-                    dist[nx][ny] = dist[now.x][now.y] + 1;
-                    que.add(new Pair(nx, ny));
+        int N = maps.length;
+        int M = maps[0].length;
+        
+        boolean visited[][] = new boolean[N][M];
+        visited[0][0] = true;
+        
+        Queue<Node> que = new LinkedList<>();
+        que.add(new Node(0,0));
+        while(!que.isEmpty()){
+            Node now = que.poll();
+            
+            for(int i = 0; i < 4; i++) {
+                int nr = now.r + rr[i];
+                int nc = now.c + rc[i];
+                
+                if(nr >= 0 && nc >= 0 && nr < N && nc < M){
+                    //아직 방문하지 않았고 갈 수 있는 길이면: 못 가면 0이니까 0보다 크면
+                    if(visited[nr][nc] == false && maps[nr][nc] > 0) {
+                        visited[nr][nc] = true;
+                        maps[nr][nc] = maps[now.r][now.c] + 1;
+                        que.add(new Node(nr,nc));
+                    }
                 }
             }
         }
-
-        return dist[maps.length - 1][maps[0].length - 1];
+        return maps[N-1][M-1] == 1 ? -1 : maps[N-1][M-1];
     }
 }
+
